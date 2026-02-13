@@ -5,8 +5,6 @@ import { AnimatedBackground } from "@/components/AnimatedBackground";
 import { FallingWheat } from "@/components/FallingWheat";
 import { WavingGrass } from "@/components/WavingGrass";
 import { DriftingClouds } from "@/components/DriftingClouds";
-import { OliveBranch } from "@/components/OliveBranch";
-import { WheatBorder } from "@/components/WheatBorder";
 
 const verses = [
   "علَى هَذِهِ الأَرْض مَا يَسْتَحِقُّ الحَياةْ: تَرَدُّدُ إبريلَ، رَائِحَةُ الخُبْزِ فِي",

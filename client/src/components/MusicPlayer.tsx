@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Volume2, VolumeX, Music } from "lucide-react";
+import { VolumeX, Music } from "lucide-react";
 
 export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
   const [showStatus, setShowStatus] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -14,14 +13,20 @@ export function MusicPlayer() {
     audio.loop = true;
     audioRef.current = audio;
 
-    // Check lunch preference
+    // Handle audio loading errors
+    audio.addEventListener('error', (e) => {
+      console.log("Audio file not found or failed to load");
+      setIsPlaying(false);
+    });
+
+    // Check saved preference
     const savedPreference = localStorage.getItem("music-enabled");
     if (savedPreference === "true") {
       // Try to autoplay
       audio.play().then(() => {
         setIsPlaying(true);
       }).catch((err) => {
-        console.log("Autoplay blocked:", err);
+        console.log("Autoplay blocked or audio not available:", err);
         setIsPlaying(false);
       });
     }
@@ -40,7 +45,10 @@ export function MusicPlayer() {
       setIsPlaying(false);
       localStorage.setItem("music-enabled", "false");
     } else {
-      audioRef.current.play().catch(console.error);
+      audioRef.current.play().catch((err) => {
+        console.error("Failed to play audio:", err);
+        setIsPlaying(false);
+      });
       setIsPlaying(true);
       localStorage.setItem("music-enabled", "true");
     }
